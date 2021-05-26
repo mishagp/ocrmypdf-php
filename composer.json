@@ -1,0 +1,39 @@
+{
+  "name": "mishagp/ocrmypdf",
+  "description": "A simple PHP wrapper for OCRmyPDF",
+  "version": "0.1.0",
+  "type": "library",
+  "keywords": [
+    "OCRmyPDF",
+    "wrapper",
+    "ocr",
+    "php"
+  ],
+  "license": "AGPL3",
+  "authors": [
+    {
+      "name": "mishagp",
+      "email": "misha@mishaprasolov.com"
+    }
+  ],
+  "support": {
+    "issues": "https://github.com/mishagp/ocrmypdf-php/issues",
+    "source": "https://github.com/mishagp/ocrmypdf-php"
+  },
+  "require": {
+    "php": "^5.3 || ^7.0 || ^8.0"
+  },
+  "require-dev": {
+    "phpunit/php-code-coverage": "^2.2.4 || ^9.0.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "mishagp\\OCRmyPDF\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "mishagp\\OCRmyPDF\\Tests\\": "tests/"
+    }
+  }
+}
