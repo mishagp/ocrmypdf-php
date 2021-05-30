@@ -28,24 +28,25 @@ class Command
     }
 
     /**
-     * @param Command $command
-     * @param $stdout
-     * @param $stderr
+     * @param Command $command Generated command
+     * @param string $stdout Value from stdout
+     * @param string $stderr Value from stderr
+     * @return bool Returns true upon successful execution
      * @throws UnsuccessfulCommandException
      */
-    public static function checkCommandExecution(Command $command, $stdout, $stderr)
+    public static function checkCommandExecution(Command $command, string $stdout, string $stderr): bool
     {
         if ($command->useFileAsOutput) {
             $file = $command->getOutputPDFPath();
-            if (file_exists($file) && filesize($file) > 0) return;
+            if (file_exists($file) && filesize($file) > 0) return true;
         }
 
         if (!$command->useFileAsOutput && $stdout) {
-            return;
+            return true;
         }
 
         if (!strpos($stderr, 'error') === FALSE) {
-            return;
+            return true;
         }
 
         $msg = [];
@@ -66,7 +67,7 @@ class Command
     /**
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         $cmd = [];
 

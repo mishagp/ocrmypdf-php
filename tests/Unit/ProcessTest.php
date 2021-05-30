@@ -2,8 +2,6 @@
 
 namespace mishagp\OCRmyPDF\Tests\Unit;
 
-use mishagp\OCRmyPDF\Process;
-use mishagp\OCRmyPDF\UnsuccessfulCommandException;
 use PHPUnit\Framework\TestCase;
 
 class ProcessTest extends TestCase
@@ -37,5 +35,15 @@ class ProcessTest extends TestCase
     public function testWrite()
     {
         $this->markTestSkipped('ProcessTest::testWrite unimplemented, skipping.');
+    }
+
+    public function testCloseStreams()
+    {
+        $this->markTestSkipped('ProcessTest::testCloseStreams unimplemented, skipping.');
+    }
+
+    public function testCloseHandle()
+    {
+        $this->markTestSkipped('ProcessTest::testCloseHandle unimplemented, skipping.');
     }
 }

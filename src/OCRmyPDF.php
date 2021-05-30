@@ -6,6 +6,11 @@ class OCRmyPDF
 {
     public Command $command;
 
+    /**
+     * OCRmyPDF constructor.
+     * @param string|null $inputFile
+     * @param Command|null $command
+     */
     public function __construct(string $inputFile = null, Command $command = null)
     {
         $this->command = $command ?: new Command();
@@ -13,20 +18,20 @@ class OCRmyPDF
     }
 
     /**
-     * @param $path
+     * @param string $filePath
      * @return bool
      * @throws NoWritePermissionsException
      */
-    public static function checkWritePermissions($path): bool
+    public static function checkWritePermissions(string $filePath): bool
     {
-        if (!is_dir(dirname($path))) mkdir(dirname($path));
-        $writableDirectory = is_writable(dirname($path));
+        if (!is_dir(dirname($filePath))) mkdir(dirname($filePath));
+        $writableDirectory = is_writable(dirname($filePath));
         $writableFile = true;
-        if (file_exists($path)) $writableFile = is_writable($path);
+        if (file_exists($filePath)) $writableFile = is_writable($filePath);
         if ($writableFile && $writableDirectory) return true;
 
         $msg = [];
-        $msg[] = "Error: No permission to write to $path";
+        $msg[] = "Error: No permission to write to $filePath";
         $msg[] = "Make sure you have the right outputFile and permissions "
             . "to write to the directory";
         $msg[] = '';
@@ -36,23 +41,23 @@ class OCRmyPDF
     }
 
     /**
-     * @param $executable
+     * @param string $executablePath
      * @throws OCRmyPDFNotFoundException
      */
-    public static function checkOCRmyPDFPresence($executable)
+    public static function checkOCRmyPDFPresence(string $executablePath)
     {
-        if (file_exists($executable)) return;
+        if (file_exists($executablePath)) return;
 
         $cmd = stripos(PHP_OS, 'win') === 0
-            ? 'where.exe ' . Command::escape($executable) . ' > NUL 2>&1'
-            : 'type ' . Command::escape($executable) . ' > /dev/null 2>&1';
+            ? 'where.exe ' . Command::escape($executablePath) . ' > NUL 2>&1'
+            : 'type ' . Command::escape($executablePath) . ' > /dev/null 2>&1';
         system($cmd, $exitCode);
 
         if ($exitCode == 0) return;
 
         $currentPath = getenv('PATH');
         $msg = [];
-        $msg[] = "Error: The command \"$executable\" was not found.";
+        $msg[] = "Error: The command \"$executablePath\" was not found.";
         $msg[] = '';
         $msg[] = 'Make sure you have OCRmyPDF and required dependencies installed on your system:';
         $msg[] = 'https://github.com/jbarlow83/OCRmyPDF';
@@ -64,15 +69,16 @@ class OCRmyPDF
     }
 
     /**
+     * @param string $filePath
      * @throws FileNotFoundException
      */
-    public static function checkFilePath($file)
+    public static function checkFilePath(string $filePath)
     {
-        if (file_exists($file)) return;
+        if (file_exists($filePath)) return;
 
         $currentDir = __DIR__;
         $msg = [];
-        $msg[] = "Error: The input file \"$file\" was not found or is inaccessible.";
+        $msg[] = "Error: The input file \"$filePath\" was not found or is inaccessible.";
         $msg[] = '';
         $msg[] = "The current __DIR__ is $currentDir";
         $msg = join(PHP_EOL, $msg);
@@ -81,12 +87,12 @@ class OCRmyPDF
     }
 
     /**
-     * @return mixed
+     * @return string|bool
      * @throws NoWritePermissionsException
      * @throws UnsuccessfulCommandException
      * @throws OCRmyPDFException
      */
-    public function run(): mixed
+    public function run(): string|bool
     {
         try {
             self::checkOCRmyPDFPresence($this->command->executable);
@@ -111,7 +117,7 @@ class OCRmyPDF
             return $output["out"];
         }
 
-        $process->close();
+        $process->closeStreams()->closeHandle();
         return true;
     }
 
@@ -138,7 +144,10 @@ class OCRmyPDF
         return $this;
     }
 
-    private function cleanTempFiles()
+    /**
+     * @return void
+     */
+    private function cleanTempFiles(): void
     {
         if (file_exists($this->command->getOutputPDFPath())) {
             unlink($this->command->getOutputPDFPath());

@@ -49,17 +49,17 @@ class Process
     }
 
     /**
-     * @param $data
-     * @param $len
+     * @param string $data
+     * @param int $dataLength
      * @return bool
      */
-    public function write($data, $len): bool
+    public function write(string $data, int $dataLength): bool
     {
         $total = 0;
         do {
             $res = fwrite($this->stdin, substr($data, $total));
-        } while ($res && $total += $res < $len);
-        return $total === $len;
+        } while ($res && $total += $res < $dataLength);
+        return $total === $dataLength;
     }
 
     /**
@@ -82,17 +82,43 @@ class Process
     }
 
     /**
-     * @return int
+     * @param string|null $stream
+     * @return $this
      */
-    public function close(): int
+    public function closeStreams(string $stream = null): Process
     {
-        $this->closeStream($this->stdin);
-        $this->closeStream($this->stdout);
-        $this->closeStream($this->stderr);
-        return proc_close($this->handle);
+        switch ($stream) {
+            case "stdin":
+                $this->closeStream($this->stdin);
+                break;
+            case "stdout":
+                $this->closeStream($this->stdout);
+                break;
+            case "stderr":
+                $this->closeStream($this->stderr);
+                break;
+            case null:
+                $this->closeStream($this->stdin);
+                $this->closeStream($this->stdout);
+                $this->closeStream($this->stderr);
+                break;
+        }
+        return $this;
     }
 
-    public function closeStdin()
+    /**
+     * @return $this
+     */
+    public function closeHandle(): Process
+    {
+        proc_close($this->handle);
+        return $this;
+    }
+
+    /**
+     * @return void
+     */
+    public function closeStdin(): void
     {
         $this->closeStream($this->stdin);
     }

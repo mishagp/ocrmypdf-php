@@ -5,13 +5,14 @@ namespace mishagp\OCRmyPDF\Tests\Unit;
 use mishagp\OCRmyPDF\FileNotFoundException;
 use mishagp\OCRmyPDF\NoWritePermissionsException;
 use mishagp\OCRmyPDF\OCRmyPDF;
+use mishagp\OCRmyPDF\OCRmyPDFNotFoundException;
 use PHPUnit\Framework\TestCase;
 
 class OCRmyPDFTest extends TestCase
 {
 
     /**
-     * @throws \mishagp\OCRmyPDF\NoWritePermissionsException
+     * @throws NoWritePermissionsException
      */
     public function testCheckWritePermissions()
     {
@@ -54,7 +55,7 @@ class OCRmyPDFTest extends TestCase
     }
 
     /**
-     * @throws \mishagp\OCRmyPDF\OCRmyPDFNotFoundException
+     * @throws OCRmyPDFNotFoundException
      */
     public function testSetExecutable()
     {
