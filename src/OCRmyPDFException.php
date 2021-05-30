@@ -2,6 +2,8 @@
 
 namespace mishagp\OCRmyPDF;
 
-abstract class OCRmyPDFException extends \Exception
+use Exception;
+
+abstract class OCRmyPDFException extends Exception
 {
 }
