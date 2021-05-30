@@ -12,7 +12,7 @@ class Command
     public string|null $inputFilePath;
     public int|null $inputDataSize;
     public string|null $inputData;
-    private string|null $outputPDFPath;
+    public string|null $outputPDFPath;
 
     /**
      * Command constructor.
@@ -90,21 +90,6 @@ class Command
                 . basename(tempnam($this->getTempDir(), 'ocr_'))
                 . ".pdf";
         return $this->outputPDFPath;
-    }
-
-    /**
-     * @throws NoWritePermissionsException
-     */
-    public function setOutputPDFPath(string|null $outputPDFPath)
-    {
-        if ($outputPDFPath == null) {
-            $this->useFileAsOutput = false;
-        } else {
-            $this->useFileAsOutput = true;
-            if (OCRmyPDF::checkWritePermissions($outputPDFPath)) {
-                $this->outputPDFPath = $outputPDFPath;
-            }
-        }
     }
 
     /**

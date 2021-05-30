@@ -87,12 +87,12 @@ class OCRmyPDF
     }
 
     /**
-     * @return string|bool
+     * @return string
      * @throws NoWritePermissionsException
      * @throws UnsuccessfulCommandException
      * @throws OCRmyPDFException
      */
-    public function run(): string|bool
+    public function run(): string
     {
         try {
             self::checkOCRmyPDFPresence($this->command->executable);
@@ -113,12 +113,14 @@ class OCRmyPDF
             if ($this->command->useFileAsOutput) $this->cleanTempFiles();
             throw $e;
         }
-        if (!$this->command->useFileAsOutput) {
-            return $output["out"];
-        }
 
         $process->closeStreams()->closeHandle();
-        return true;
+
+        if (!$this->command->useFileAsOutput) {
+            return $output["out"];
+        } else {
+            return $this->command->getOutputPDFPath();
+        }
     }
 
     /**
@@ -166,6 +168,22 @@ class OCRmyPDF
     {
         self::checkOCRmyPDFPresence($executablePath);
         $this->command->executable = $executablePath;
+        return $this;
+    }
+
+    /**
+     * @throws NoWritePermissionsException
+     */
+    public function setOutputPDFPath(string|null $outputPDFPath)
+    {
+        if ($outputPDFPath == null) {
+            $this->command->useFileAsOutput = false;
+        } else {
+            $this->command->useFileAsOutput = true;
+            if (self::checkWritePermissions($outputPDFPath)) {
+                $this->command->outputPDFPath = $outputPDFPath;
+            }
+        }
         return $this;
     }
 }

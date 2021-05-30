@@ -19,11 +19,11 @@ class OCRmyPDFGeneratesOutputFileTest extends TestCase
     {
         $inputFile = __DIR__ . DIRECTORY_SEPARATOR . "examples" . DIRECTORY_SEPARATOR . "en_US_doc1.pdf";
         $instance = new OCRmyPDF($inputFile);
-        $this->assertTrue($instance->run());
-        $this->assertFileExists($instance->command->getOutputPDFPath());
-        $this->assertFileIsReadable($instance->command->getOutputPDFPath());
-        $this->assertFileIsWritable($instance->command->getOutputPDFPath());
-        echo "Output: " . $instance->command->getOutputPDFPath();
+        $outputPath = $instance->run();
+        $this->assertFileExists($outputPath);
+        $this->assertFileIsReadable($outputPath);
+        $this->assertFileIsWritable($outputPath);
+        echo "Output: $outputPath";
     }
 
     /**
@@ -35,11 +35,11 @@ class OCRmyPDFGeneratesOutputFileTest extends TestCase
     {
         $inputFile = __DIR__ . DIRECTORY_SEPARATOR . "examples" . DIRECTORY_SEPARATOR . "en_US_doc2.pdf";
         $instance = new OCRmyPDF($inputFile);
-        $this->assertTrue($instance->run());
-        $this->assertFileExists($instance->command->getOutputPDFPath());
-        $this->assertFileIsReadable($instance->command->getOutputPDFPath());
-        $this->assertFileIsWritable($instance->command->getOutputPDFPath());
-        echo "Output: " . $instance->command->getOutputPDFPath();
+        $outputPath = $instance->run();
+        $this->assertFileExists($outputPath);
+        $this->assertFileIsReadable($outputPath);
+        $this->assertFileIsWritable($outputPath);
+        echo "Output: $outputPath";
     }
 
     /**
@@ -51,11 +51,11 @@ class OCRmyPDFGeneratesOutputFileTest extends TestCase
     {
         $inputFile = __DIR__ . DIRECTORY_SEPARATOR . "examples" . DIRECTORY_SEPARATOR . "en_US_doc3.pdf";
         $instance = new OCRmyPDF($inputFile);
-        $this->assertTrue($instance->run());
-        $this->assertFileExists($instance->command->getOutputPDFPath());
-        $this->assertFileIsReadable($instance->command->getOutputPDFPath());
-        $this->assertFileIsWritable($instance->command->getOutputPDFPath());
-        echo "Output: " . $instance->command->getOutputPDFPath();
+        $outputPath = $instance->run();
+        $this->assertFileExists($outputPath);
+        $this->assertFileIsReadable($outputPath);
+        $this->assertFileIsWritable($outputPath);
+        echo "Output: $outputPath";
     }
 
     /**
@@ -67,11 +67,11 @@ class OCRmyPDFGeneratesOutputFileTest extends TestCase
     {
         $inputFile = __DIR__ . DIRECTORY_SEPARATOR . "examples" . DIRECTORY_SEPARATOR . "en_US_img1.png";
         $instance = new OCRmyPDF($inputFile);
-        $this->assertTrue($instance->run());
-        $this->assertFileExists($instance->command->getOutputPDFPath());
-        $this->assertFileIsReadable($instance->command->getOutputPDFPath());
-        $this->assertFileIsWritable($instance->command->getOutputPDFPath());
-        echo "Output: " . $instance->command->getOutputPDFPath();
+        $outputPath = $instance->run();
+        $this->assertFileExists($outputPath);
+        $this->assertFileIsReadable($outputPath);
+        $this->assertFileIsWritable($outputPath);
+        echo "Output: $outputPath";
     }
 
     /**
@@ -83,11 +83,11 @@ class OCRmyPDFGeneratesOutputFileTest extends TestCase
     {
         $inputFile = __DIR__ . DIRECTORY_SEPARATOR . "examples" . DIRECTORY_SEPARATOR . "en_US_doc1.pdf";
         $instance = new OCRmyPDF($inputFile);
-        $instance->command->setOutputPDFPath(sys_get_temp_dir() . DIRECTORY_SEPARATOR . basename(tempnam(sys_get_temp_dir(), 'ocr_')) . ".pdf");
-        $this->assertTrue($instance->run());
-        $this->assertFileExists($instance->command->getOutputPDFPath());
-        $this->assertFileIsReadable($instance->command->getOutputPDFPath());
-        $this->assertFileIsWritable($instance->command->getOutputPDFPath());
-        echo "Output: " . $instance->command->getOutputPDFPath();
+        $instance->setOutputPDFPath(sys_get_temp_dir() . DIRECTORY_SEPARATOR . basename(tempnam(sys_get_temp_dir(), 'ocr_')) . ".pdf");
+        $outputPath = $instance->run();
+        $this->assertFileExists($outputPath);
+        $this->assertFileIsReadable($outputPath);
+        $this->assertFileIsWritable($outputPath);
+        echo "Output: $outputPath";
     }
 }

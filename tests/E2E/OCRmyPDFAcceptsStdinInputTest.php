@@ -22,10 +22,10 @@ class OCRmyPDFAcceptsStdinInputTest extends TestCase
         $inputFile = __DIR__ . DIRECTORY_SEPARATOR . "examples" . DIRECTORY_SEPARATOR . "en_US_doc1.pdf";
         $instance = new OCRmyPDF();
         $instance->setInputData(file_get_contents($inputFile), filesize($inputFile));
-        $this->assertTrue($instance->run());
-        $this->assertFileExists($instance->command->getOutputPDFPath());
-        $this->assertFileIsReadable($instance->command->getOutputPDFPath());
-        $this->assertFileIsWritable($instance->command->getOutputPDFPath());
-        echo "Output: " . $instance->command->getOutputPDFPath();
+        $outputPath = $instance->run();
+        $this->assertFileExists($outputPath);
+        $this->assertFileIsReadable($outputPath);
+        $this->assertFileIsWritable($outputPath);
+        echo "Output: $outputPath";
     }
 }

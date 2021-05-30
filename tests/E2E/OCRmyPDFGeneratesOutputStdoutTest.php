@@ -22,7 +22,7 @@ class OCRmyPDFGeneratesOutputStdoutTest extends TestCase
         $inputFile = __DIR__ . DIRECTORY_SEPARATOR . "examples" . DIRECTORY_SEPARATOR . "en_US_doc1.pdf";
         $instance = new OCRmyPDF();
         $instance->setInputFile($inputFile);
-        $instance->command->setOutputPDFPath(null);
+        $instance->setOutputPDFPath(null);
         $stdOut = $instance->run();
         $this->assertStringContainsString("<xmp:CreatorTool>ocrmypdf", $stdOut);
     }
