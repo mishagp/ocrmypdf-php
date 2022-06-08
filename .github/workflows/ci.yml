@@ -24,22 +24,26 @@ jobs:
 #      - name: (DEBUG) ocrmypdf path
 #        run: which ocrmypdf
 
-      - uses: php-actions/composer@v5
+      - uses: php-actions/composer@v6
         with:
           php_version: 8.0
 
       # TODO Implement automated testing for multiple PHP versions
+
       - name: PHPUnit Tests (PHP 8.0)
-        uses: mishagp/phpunit@master
-        env:
-          XDEBUG_MODE: coverage
-        with:
-          command_prefix: which php
-          php_version: 8.0
-          bootstrap: vendor/autoload.php
-          configuration: phpunit.xml
-          php_extensions: xdebug
-          args: --coverage-clover ./coverage.xml
+        run: php -dxdebug.mode=coverage ./vendor/phpunit/phpunit/phpunit --coverage-clover ./coverage.xml --configuration ./phpunit.xml
+
+#      - name: PHPUnit Tests (PHP 8.0)
+#        uses: mishagp/phpunit@master
+#        env:
+#          XDEBUG_MODE: coverage
+#        with:
+#          command_prefix: which php
+#          php_version: 8.0
+#          bootstrap: vendor/autoload.php
+#          configuration: phpunit.xml
+#          php_extensions: xdebug
+#          args: --coverage-clover ./coverage.xml
 
       - name: Upload to Codecov
         uses: codecov/codecov-action@v2
