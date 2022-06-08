@@ -34,7 +34,7 @@ jobs:
         env:
           XDEBUG_MODE: coverage
         with:
-          command_prefix: sudo apt-get install -y ocrmypdf
+          command_prefix: apt-get install -y ocrmypdf
           php_version: 8.0
           bootstrap: vendor/autoload.php
           configuration: phpunit.xml
