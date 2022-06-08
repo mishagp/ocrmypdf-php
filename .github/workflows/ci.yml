@@ -11,8 +11,8 @@ jobs:
 
       - name: Install ocrmypdf
         run: |
-        sudo apt-get update
-        sudo apt-get install -y ocrmypdf
+          sudo apt-get update
+          sudo apt-get install -y ocrmypdf
 
       - name: (DEBUG) php path
         run: which php
