@@ -13,10 +13,10 @@ jobs:
 # If we are going to use the defacto PHPUnit action it seems
 # we will need to install any dependencies within the container
 
-#      - name: Install ocrmypdf
-#        run: |
-#          sudo apt-get update
-#          sudo apt-get install -y ocrmypdf
+      - name: Install ocrmypdf
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ocrmypdf
 #
 #      - name: (DEBUG) php path
 #        run: which php
