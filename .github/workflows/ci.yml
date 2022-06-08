@@ -6,50 +6,29 @@ jobs:
   build-test:
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        php-version: [ 8.0, 8.1 ]
+
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout Repository
+        uses: actions/checkout@v3
 
-# TODO Remove once workflow is implemented
-# If we are going to use the defacto PHPUnit action it seems
-# we will need to install any dependencies within the container
-
-      - name: Install ocrmypdf
+      - name: Install ocrmypdf via APT
         run: |
           sudo apt-get update
           sudo apt-get install -y ocrmypdf
-#
-#      - name: (DEBUG) php path
-#        run: which php
-#
-#      - name: (DEBUG) ocrmypdf path
-#        run: which ocrmypdf
 
-      - uses: php-actions/composer@v6
+      - name: Install Composer dependencies
+        uses: php-actions/composer@v6
         with:
-          php_version: 8.0
+          php_version: ${{ matrix.php-version }}
 
-      # TODO Implement automated testing for multiple PHP versions
-
-      - name: PHPUnit Tests (PHP 8.0)
+      - name: Invoke PHPUnit with Code Coverage
         run: php -dxdebug.mode=coverage ./vendor/phpunit/phpunit/phpunit --coverage-clover ./coverage.xml --configuration ./phpunit.xml
 
-#      - name: PHPUnit Tests (PHP 8.0)
-#        uses: mishagp/phpunit@master
-#        env:
-#          XDEBUG_MODE: coverage
-#        with:
-#          command_prefix: which php
-#          php_version: 8.0
-#          bootstrap: vendor/autoload.php
-#          configuration: phpunit.xml
-#          php_extensions: xdebug
-#          args: --coverage-clover ./coverage.xml
-
       - name: Upload to Codecov
-        uses: codecov/codecov-action@v2
+        uses: codecov/codecov-action@v3
         with:
-#          Since this is a public repo this shouldn't be needed (https://github.com/codecov/codecov-action#usage)
-#          TODO Confirm upload token is
-#          token: ${{ secrets.CODE_COV_TOKEN }}
           files: ./coverage.xml
           verbose: true
