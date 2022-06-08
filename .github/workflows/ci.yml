@@ -1,9 +1,10 @@
 name: CI
 
-on: [push]
+on: [push, pull_request]
 
 jobs:
-  build-test:
+  run-phpunit-tests:
+    name: Run PHPUnit with PHP Version
     runs-on: ubuntu-latest
 
     strategy:
