@@ -1,0 +1,33 @@
+name: CI
+
+on: [push]
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: php-actions/composer@v5
+
+      # TODO Implement automated testing for multiple PHP versions
+      - name: PHPUnit Tests (PHP 8.1)
+        uses: php-actions/phpunit@v3
+        env:
+          XDEBUG_MODE: coverage
+        with:
+          php_version: 8.1
+          bootstrap: vendor/autoload.php
+          configuration: test/phpunit.xml
+          php_extensions: xdebug
+          args: --coverage-clover ./coverage.xml
+
+      - name: Upload to Codecov
+        uses: codecov/codecov-action@v2
+        with:
+#          Since this is a public repo this shouldn't be needed (https://github.com/codecov/codecov-action#usage)
+#          TODO Confirm upload token is
+#          token: ${{ secrets.CODE_COV_TOKEN }}
+          files: ./coverage.xml
+          verbose: true
