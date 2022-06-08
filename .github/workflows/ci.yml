@@ -10,7 +10,15 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Install ocrmypdf
-        run: sudo apt-get install -y ocrmypdf
+        run: |
+        sudo apt-get update
+        sudo apt-get install -y ocrmypdf
+
+      - name: (DEBUG) php path
+        run: which php
+
+      - name: (DEBUG) ocrmypdf path
+        run: which ocrmypdf
 
       - uses: php-actions/composer@v5
         with:
