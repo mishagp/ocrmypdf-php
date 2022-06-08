@@ -30,7 +30,7 @@ jobs:
 
       # TODO Implement automated testing for multiple PHP versions
       - name: PHPUnit Tests (PHP 8.0)
-        uses: mishagp/phpunit
+        uses: mishagp/phpunit@master
         env:
           XDEBUG_MODE: coverage
         with:
