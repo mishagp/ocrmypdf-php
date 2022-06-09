@@ -1,0 +1,35 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  run-phpunit-tests:
+    name: Run PHPUnit with PHP Version
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        php-version: [ 8.0, 8.1 ]
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Install ocrmypdf via APT
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ocrmypdf
+
+      - name: Install Composer dependencies
+        uses: php-actions/composer@v6
+        with:
+          php_version: ${{ matrix.php-version }}
+
+      - name: Invoke PHPUnit with Code Coverage
+        run: php -dxdebug.mode=coverage ./vendor/phpunit/phpunit/phpunit --coverage-clover ./coverage.xml --configuration ./phpunit.xml
+
+      - name: Upload to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          files: ./coverage.xml
+          verbose: true
