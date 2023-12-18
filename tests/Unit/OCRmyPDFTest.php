@@ -23,31 +23,6 @@ class OCRmyPDFTest extends TestCase
         OCRmyPDF::checkWritePermissions("/dev/null");
     }
 
-    public function testRun(): void
-    {
-        $this->markTestSkipped('OCRmyPDFTest::testRun unimplemented, skipping.');
-    }
-
-    public function testSetInputData(): void
-    {
-        $this->markTestSkipped('OCRmyPDFTest::testSetInputData unimplemented, skipping.');
-    }
-
-    public function test__construct(): void
-    {
-        $this->markTestSkipped('OCRmyPDFTest::test__construct unimplemented, skipping.');
-    }
-
-    public function testSetInputFile(): void
-    {
-        $this->markTestSkipped('OCRmyPDFTest::testSetInputFile unimplemented, skipping.');
-    }
-
-    public function testCheckOCRmyPDFPresence(): void
-    {
-        $this->markTestSkipped('OCRmyPDFTest::testCheckOCRmyPDFPresence unimplemented, skipping.');
-    }
-
     public function testCheckFilePath(): void
     {
         $this->expectException(FileNotFoundException::class);

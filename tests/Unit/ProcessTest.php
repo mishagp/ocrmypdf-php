@@ -2,48 +2,60 @@
 
 namespace mishagp\OCRmyPDF\Tests\Unit;
 
+use InvalidArgumentException;
+use mishagp\OCRmyPDF\Process;
+use mishagp\OCRmyPDF\UnsuccessfulCommandException;
 use PHPUnit\Framework\TestCase;
+use ReflectionClass;
 
 class ProcessTest extends TestCase
 {
-
-    public function testCloseStdin(): void
+    public function testCheckProcessCreationFailed(): void
     {
-        $this->markTestSkipped('ProcessTest::testCloseStdin unimplemented, skipping.');
+        $this->expectException(UnsuccessfulCommandException::class);
+        Process::checkProcessCreation(FALSE, "");
     }
 
-    public function testWait(): void
+    public function testWriteWithNullStdin(): void
     {
-        $this->markTestSkipped('ProcessTest::testWait unimplemented, skipping.');
+        $process = new Process("");
+
+        $reflectedProcess = new ReflectionClass($process);
+
+        $reflectedProcessStdin = $reflectedProcess->getProperty('stdin');
+        $reflectedProcessStdin->setAccessible(true);
+        $reflectedProcessStdin->setValue($process, null);
+
+        $this->assertFalse($process->write("test", 0));
     }
 
-    public function testCheckProcessCreation(): void
+    public function testWaitWithNullStdin(): void
     {
-        $this->markTestSkipped('ProcessTest::testCheckProcessCreation unimplemented, skipping.');
+        $process = new Process("");
+
+        $reflectedProcess = new ReflectionClass($process);
+
+        $reflectedProcessStdin = $reflectedProcess->getProperty('stdin');
+        $reflectedProcessStdin->setAccessible(true);
+        $reflectedProcessStdin->setValue($process, null);
+
+        $this->assertEquals([
+            "out" => "",
+            "err" => ""
+        ], $process->wait());
     }
 
-    public function testClose(): void
+    public function testCloseHandleWithNullHandle(): void
     {
-        $this->markTestSkipped('ProcessTest::testClose unimplemented, skipping.');
-    }
+        $this->expectException(InvalidArgumentException::class);
+        $process = new Process("");
 
-    public function test__construct(): void
-    {
-        $this->markTestSkipped('ProcessTest::test__construct unimplemented, skipping.');
-    }
+        $reflectedProcess = new ReflectionClass($process);
 
-    public function testWrite(): void
-    {
-        $this->markTestSkipped('ProcessTest::testWrite unimplemented, skipping.');
-    }
+        $reflectedProcessStdin = $reflectedProcess->getProperty('handle');
+        $reflectedProcessStdin->setAccessible(true);
+        $reflectedProcessStdin->setValue($process, null);
 
-    public function testCloseStreams(): void
-    {
-        $this->markTestSkipped('ProcessTest::testCloseStreams unimplemented, skipping.');
-    }
-
-    public function testCloseHandle(): void
-    {
-        $this->markTestSkipped('ProcessTest::testCloseHandle unimplemented, skipping.');
+        $process->closeHandle();
     }
 }

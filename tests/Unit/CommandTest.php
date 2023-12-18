@@ -7,32 +7,6 @@ use PHPUnit\Framework\TestCase;
 
 class CommandTest extends TestCase
 {
-
-    public function test__toString(): void
-    {
-        $this->markTestSkipped('CommandTest::test__toString unimplemented, skipping.');
-    }
-
-    public function test__construct(): void
-    {
-        $this->markTestSkipped('CommandTest::test__construct unimplemented, skipping.');
-    }
-
-    public function testEscape(): void
-    {
-        $this->markTestSkipped('CommandTest::testEscape unimplemented, skipping.');
-    }
-
-    public function testCheckCommandExecution(): void
-    {
-        $this->markTestSkipped('CommandTest::testCheckCommandExecution unimplemented, skipping.');
-    }
-
-    public function testGetOutputPDFPath(): void
-    {
-        $this->markTestSkipped('CommandTest::testGetOutputPDFPath unimplemented, skipping.');
-    }
-
     public function testGetOCRmyPDFVersion(): void
     {
         $version = (new Command())->getOCRmyPDFVersion();
