@@ -1,0 +1,20 @@
+name: PHPStan
+
+on: [push, pull_request]
+
+jobs:
+  run-phpstan-analysis:
+    name: Run PHPStan analysis
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Install Composer dependencies
+        uses: php-actions/composer@v6
+        with:
+          php_version: 8.2
+
+      - name: Invoke PHPStan
+        run: ./vendor/bin/phpstan --error-format=github
