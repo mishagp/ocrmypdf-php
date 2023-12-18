@@ -15,7 +15,7 @@ class OCRmyPDFGeneratesOutputFileTest extends TestCase
      * @throws NoWritePermissionsException
      * @throws UnsuccessfulCommandException
      */
-    public function testProcess_en_US_doc1_NoParameters()
+    public function testProcess_en_US_doc1_NoParameters(): void
     {
         $inputFile = __DIR__ . DIRECTORY_SEPARATOR . "examples" . DIRECTORY_SEPARATOR . "en_US_doc1.pdf";
         $instance = new OCRmyPDF($inputFile);
@@ -31,7 +31,7 @@ class OCRmyPDFGeneratesOutputFileTest extends TestCase
      * @throws NoWritePermissionsException
      * @throws UnsuccessfulCommandException
      */
-    public function testProcess_en_US_doc2_NoParameters()
+    public function testProcess_en_US_doc2_NoParameters(): void
     {
         $inputFile = __DIR__ . DIRECTORY_SEPARATOR . "examples" . DIRECTORY_SEPARATOR . "en_US_doc2.pdf";
         $instance = new OCRmyPDF($inputFile);
@@ -47,7 +47,7 @@ class OCRmyPDFGeneratesOutputFileTest extends TestCase
      * @throws NoWritePermissionsException
      * @throws UnsuccessfulCommandException
      */
-    public function testProcess_en_US_doc3_NoParameters()
+    public function testProcess_en_US_doc3_NoParameters(): void
     {
         $inputFile = __DIR__ . DIRECTORY_SEPARATOR . "examples" . DIRECTORY_SEPARATOR . "en_US_doc3.pdf";
         $instance = new OCRmyPDF($inputFile);
@@ -63,7 +63,7 @@ class OCRmyPDFGeneratesOutputFileTest extends TestCase
      * @throws NoWritePermissionsException
      * @throws UnsuccessfulCommandException
      */
-    public function testProcess_en_US_img1_NoParameters()
+    public function testProcess_en_US_img1_NoParameters(): void
     {
         $inputFile = __DIR__ . DIRECTORY_SEPARATOR . "examples" . DIRECTORY_SEPARATOR . "en_US_img1.png";
         $instance = new OCRmyPDF($inputFile);
@@ -79,11 +79,11 @@ class OCRmyPDFGeneratesOutputFileTest extends TestCase
      * @throws NoWritePermissionsException
      * @throws UnsuccessfulCommandException
      */
-    public function testProcess_en_US_doc1_SetOutputPDFManually()
+    public function testProcess_en_US_doc1_SetOutputPDFManually(): void
     {
         $inputFile = __DIR__ . DIRECTORY_SEPARATOR . "examples" . DIRECTORY_SEPARATOR . "en_US_doc1.pdf";
         $instance = new OCRmyPDF($inputFile);
-        $instance->setOutputPDFPath(sys_get_temp_dir() . DIRECTORY_SEPARATOR . basename(tempnam(sys_get_temp_dir(), 'ocr_')) . ".pdf");
+        $instance->setOutputPDFPath(sys_get_temp_dir() . DIRECTORY_SEPARATOR . basename((string)tempnam(sys_get_temp_dir(), 'ocr_')) . ".pdf");
         $outputPath = $instance->run();
         $this->assertFileExists($outputPath);
         $this->assertFileIsReadable($outputPath);

@@ -17,7 +17,7 @@ class OCRmyPDFGeneratesOutputStdoutTest extends TestCase
      * @throws NoWritePermissionsException
      * @throws UnsuccessfulCommandException
      */
-    public function testProcess_en_US_doc1_NoParameters()
+    public function testProcess_en_US_doc1_NoParameters(): void
     {
         $inputFile = __DIR__ . DIRECTORY_SEPARATOR . "examples" . DIRECTORY_SEPARATOR . "en_US_doc1.pdf";
         $instance = new OCRmyPDF();

@@ -2,48 +2,60 @@
 
 namespace mishagp\OCRmyPDF\Tests\Unit;
 
+use InvalidArgumentException;
+use mishagp\OCRmyPDF\Process;
+use mishagp\OCRmyPDF\UnsuccessfulCommandException;
 use PHPUnit\Framework\TestCase;
+use ReflectionClass;
 
 class ProcessTest extends TestCase
 {
-
-    public function testCloseStdin()
+    public function testCheckProcessCreationFailed(): void
     {
-        $this->markTestSkipped('ProcessTest::testCloseStdin unimplemented, skipping.');
+        $this->expectException(UnsuccessfulCommandException::class);
+        Process::checkProcessCreation(FALSE, "");
     }
 
-    public function testWait()
+    public function testWriteWithNullStdin(): void
     {
-        $this->markTestSkipped('ProcessTest::testWait unimplemented, skipping.');
+        $process = new Process("");
+
+        $reflectedProcess = new ReflectionClass($process);
+
+        $reflectedProcessStdin = $reflectedProcess->getProperty('stdin');
+        $reflectedProcessStdin->setAccessible(true);
+        $reflectedProcessStdin->setValue($process, null);
+
+        $this->assertFalse($process->write("test", 0));
     }
 
-    public function testCheckProcessCreation()
+    public function testWaitWithNullStdin(): void
     {
-        $this->markTestSkipped('ProcessTest::testCheckProcessCreation unimplemented, skipping.');
+        $process = new Process("");
+
+        $reflectedProcess = new ReflectionClass($process);
+
+        $reflectedProcessStdin = $reflectedProcess->getProperty('stdin');
+        $reflectedProcessStdin->setAccessible(true);
+        $reflectedProcessStdin->setValue($process, null);
+
+        $this->assertEquals([
+            "out" => "",
+            "err" => ""
+        ], $process->wait());
     }
 
-    public function testClose()
+    public function testCloseHandleWithNullHandle(): void
     {
-        $this->markTestSkipped('ProcessTest::testClose unimplemented, skipping.');
-    }
+        $this->expectException(InvalidArgumentException::class);
+        $process = new Process("");
 
-    public function test__construct()
-    {
-        $this->markTestSkipped('ProcessTest::test__construct unimplemented, skipping.');
-    }
+        $reflectedProcess = new ReflectionClass($process);
 
-    public function testWrite()
-    {
-        $this->markTestSkipped('ProcessTest::testWrite unimplemented, skipping.');
-    }
+        $reflectedProcessStdin = $reflectedProcess->getProperty('handle');
+        $reflectedProcessStdin->setAccessible(true);
+        $reflectedProcessStdin->setValue($process, null);
 
-    public function testCloseStreams()
-    {
-        $this->markTestSkipped('ProcessTest::testCloseStreams unimplemented, skipping.');
-    }
-
-    public function testCloseHandle()
-    {
-        $this->markTestSkipped('ProcessTest::testCloseHandle unimplemented, skipping.');
+        $process->closeHandle();
     }
 }

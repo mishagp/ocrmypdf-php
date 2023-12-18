@@ -19,7 +19,7 @@ class OCRmyPDFThrowsExceptionsTest extends TestCase
      * @throws UnsuccessfulCommandException
      * @throws NoWritePermissionsException
      */
-    public function testOCRmyPDFThrowsFileNotFoundExceptionWithoutInput()
+    public function testOCRmyPDFThrowsFileNotFoundExceptionWithoutInput(): void
     {
         $this->expectException(FileNotFoundException::class);
         $instance = new OCRmyPDF();
@@ -31,11 +31,11 @@ class OCRmyPDFThrowsExceptionsTest extends TestCase
      * @throws UnsuccessfulCommandException
      * @throws NoWritePermissionsException
      */
-    public function testOCRmyPDFThrowsOCRmyPDFFoundExceptionWithMalformedExecutable()
+    public function testOCRmyPDFThrowsOCRmyPDFFoundExceptionWithMalformedExecutable(): void
     {
         $this->expectException(OCRmyPDFNotFoundException::class);
         $instance = new OCRmyPDF();
-        $instance->setExecutable(substr(md5(rand()), 0, 20));
+        $instance->setExecutable(substr(md5((string)rand()), 0, 20));
         $instance->run();
     }
 
@@ -44,7 +44,7 @@ class OCRmyPDFThrowsExceptionsTest extends TestCase
      * @throws UnsuccessfulCommandException
      * @throws NoWritePermissionsException
      */
-    public function testOCRmyPDFThrowsExceptionWithInvalidPDF()
+    public function testOCRmyPDFThrowsExceptionWithInvalidPDF(): void
     {
         $this->expectException(UnsuccessfulCommandException::class);
         $inputFile = __DIR__ . DIRECTORY_SEPARATOR . "examples" . DIRECTORY_SEPARATOR . "invalid_pdf.pdf";

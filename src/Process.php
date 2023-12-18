@@ -2,6 +2,8 @@
 
 namespace mishagp\OCRmyPDF;
 
+use InvalidArgumentException;
+
 class Process
 {
     private mixed $stdin;
@@ -10,7 +12,6 @@ class Process
     private mixed $handle;
 
     /**
-     * @param string $commandString
      * @throws UnsuccessfulCommandException
      */
     public function __construct(string $commandString)
@@ -25,19 +26,19 @@ class Process
 
         self::checkProcessCreation($this->handle, $commandString);
 
-        //This is can avoid deadlock on some cases (when stderr buffer is filled up before writing to stdout and vice-versa)
-        stream_set_blocking($this->stdout, 0);
-        stream_set_blocking($this->stderr, 0);
+        //This can avoid deadlock on some cases (when stderr buffer is filled up before writing to stdout and vice-versa)
+        stream_set_blocking($this->stdout, false);
+        stream_set_blocking($this->stderr, false);
     }
 
     /**
-     * @param resource $processHandle
-     * @param string|Command $command
      * @throws UnsuccessfulCommandException
      */
-    public static function checkProcessCreation(mixed $processHandle, string|Command $command)
+    public static function checkProcessCreation(mixed $processHandle, string|Command $command): void
     {
-        if ($processHandle !== FALSE) return;
+        if (is_resource($processHandle) === true) {
+            return;
+        }
 
         $msg[] = 'Error: The command could not be launched.';
         $msg[] = '';
@@ -48,13 +49,12 @@ class Process
         throw new UnsuccessfulCommandException($msg);
     }
 
-    /**
-     * @param string $data
-     * @param int $dataLength
-     * @return bool
-     */
     public function write(string $data, int $dataLength): bool
     {
+        if (is_resource($this->stdin) === false) {
+            return false;
+        }
+
         $total = 0;
         do {
             $res = fwrite($this->stdin, substr($data, $total));
@@ -63,15 +63,23 @@ class Process
     }
 
     /**
-     * @return string[]
+     * @return array<string, string>
      */
     public function wait(): array
     {
-        $running = true;
         $data = [
             "out" => "",
             "err" => ""
         ];
+
+        if (is_resource($this->stdout) === false
+            || is_resource($this->stderr) === false
+            || is_resource($this->handle) === false
+        ) {
+            return $data;
+        }
+
+        $running = true;
         while ($running === true) {
             $data["out"] .= fread($this->stdout, 8192);
             $data["err"] .= fread($this->stderr, 8192);
@@ -81,11 +89,7 @@ class Process
         return $data;
     }
 
-    /**
-     * @param string|null $stream
-     * @return $this
-     */
-    public function closeStreams(string $stream = null): Process
+    public function closeStreams(?string $stream = null): self
     {
         switch ($stream) {
             case "stdin":
@@ -106,18 +110,15 @@ class Process
         return $this;
     }
 
-    /**
-     * @return $this
-     */
-    public function closeHandle(): Process
+    public function closeHandle(): self
     {
+        if (is_resource($this->handle) === false) {
+            throw new InvalidArgumentException("Process handle is not a resource");
+        }
         proc_close($this->handle);
         return $this;
     }
 
-    /**
-     * @return void
-     */
     public function closeStdin(): void
     {
         $this->closeStream($this->stdin);
@@ -126,7 +127,7 @@ class Process
     /**
      * @param resource $stream
      */
-    private function closeStream(&$stream)
+    private function closeStream(&$stream): void
     {
         if ($stream !== NULL) {
             fclose($stream);
