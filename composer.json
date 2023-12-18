@@ -25,7 +25,8 @@
   },
   "require-dev": {
     "phpunit/php-code-coverage": "^2.2.4 || ^9.0.0",
-    "phpunit/phpunit": "^9.0"
+    "phpunit/phpunit": "^9.0",
+    "phpstan/phpstan": "^1.10"
   },
   "autoload": {
     "psr-4": {

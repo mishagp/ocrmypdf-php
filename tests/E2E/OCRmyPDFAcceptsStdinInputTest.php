@@ -17,11 +17,11 @@ class OCRmyPDFAcceptsStdinInputTest extends TestCase
      * @throws NoWritePermissionsException
      * @throws UnsuccessfulCommandException
      */
-    public function testProcess_en_US_doc1_NoParameters()
+    public function testProcess_en_US_doc1_NoParameters(): void
     {
         $inputFile = __DIR__ . DIRECTORY_SEPARATOR . "examples" . DIRECTORY_SEPARATOR . "en_US_doc1.pdf";
         $instance = new OCRmyPDF();
-        $instance->setInputData(file_get_contents($inputFile), filesize($inputFile));
+        $instance->setInputData((string)file_get_contents($inputFile), (int)filesize($inputFile));
         $outputPath = $instance->run();
         $this->assertFileExists($outputPath);
         $this->assertFileIsReadable($outputPath);

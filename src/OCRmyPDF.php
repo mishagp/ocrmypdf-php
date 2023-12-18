@@ -2,6 +2,8 @@
 
 namespace mishagp\OCRmyPDF;
 
+use InvalidArgumentException;
+
 class OCRmyPDF
 {
     public Command $command;
@@ -44,7 +46,7 @@ class OCRmyPDF
      * @param string $executablePath
      * @throws OCRmyPDFNotFoundException
      */
-    public static function checkOCRmyPDFPresence(string $executablePath)
+    public static function checkOCRmyPDFPresence(string $executablePath): void
     {
         if (file_exists($executablePath)) return;
 
@@ -72,7 +74,7 @@ class OCRmyPDF
      * @param string $filePath
      * @throws FileNotFoundException
      */
-    public static function checkFilePath(string $filePath)
+    public static function checkFilePath(string $filePath): void
     {
         if (file_exists($filePath)) return;
 
@@ -97,13 +99,19 @@ class OCRmyPDF
         try {
             self::checkOCRmyPDFPresence($this->command->executable);
             if ($this->command->useFileAsInput) {
-                self::checkFilePath($this->command->inputFilePath);
+                self::checkFilePath(
+                    $this->command->inputFilePath
+                    ?? throw new InvalidArgumentException("Input file path is not set")
+                );
             }
 
             $process = new Process("$this->command");
 
             if (!$this->command->useFileAsInput) {
-                $process->write($this->command->inputData, $this->command->inputDataSize);
+                $process->write(
+                    $this->command->inputData ?? throw new InvalidArgumentException("Input data not set"),
+                    $this->command->inputDataSize ?? throw new InvalidArgumentException("Input data size not set")
+                );
                 $process->closeStdin();
             }
             $output = $process->wait();
@@ -174,7 +182,7 @@ class OCRmyPDF
     /**
      * @throws NoWritePermissionsException
      */
-    public function setOutputPDFPath(string|null $outputPDFPath)
+    public function setOutputPDFPath(string|null $outputPDFPath): self
     {
         if ($outputPDFPath == null) {
             $this->command->useFileAsOutput = false;

@@ -14,7 +14,7 @@ class OCRmyPDFTest extends TestCase
     /**
      * @throws NoWritePermissionsException
      */
-    public function testCheckWritePermissions()
+    public function testCheckWritePermissions(): void
     {
         if (strtoupper(substr(PHP_OS, 0, 3)) == 'WIN') {
             $this->markTestSkipped('OCRmyPDFTest::testCheckWritePermissions unimplemented on Windows-based platforms, skipping.');
@@ -23,41 +23,41 @@ class OCRmyPDFTest extends TestCase
         OCRmyPDF::checkWritePermissions("/dev/null");
     }
 
-    public function testRun()
+    public function testRun(): void
     {
         $this->markTestSkipped('OCRmyPDFTest::testRun unimplemented, skipping.');
     }
 
-    public function testSetInputData()
+    public function testSetInputData(): void
     {
         $this->markTestSkipped('OCRmyPDFTest::testSetInputData unimplemented, skipping.');
     }
 
-    public function test__construct()
+    public function test__construct(): void
     {
         $this->markTestSkipped('OCRmyPDFTest::test__construct unimplemented, skipping.');
     }
 
-    public function testSetInputFile()
+    public function testSetInputFile(): void
     {
         $this->markTestSkipped('OCRmyPDFTest::testSetInputFile unimplemented, skipping.');
     }
 
-    public function testCheckOCRmyPDFPresence()
+    public function testCheckOCRmyPDFPresence(): void
     {
         $this->markTestSkipped('OCRmyPDFTest::testCheckOCRmyPDFPresence unimplemented, skipping.');
     }
 
-    public function testCheckFilePath()
+    public function testCheckFilePath(): void
     {
         $this->expectException(FileNotFoundException::class);
-        OCRmyPDF::checkFilePath(substr(md5(rand()), 0, 20));
+        OCRmyPDF::checkFilePath(substr(md5((string)rand()), 0, 20));
     }
 
     /**
      * @throws OCRmyPDFNotFoundException
      */
-    public function testSetExecutable()
+    public function testSetExecutable(): void
     {
         $instance = new OCRmyPDF();
         $this->assertInstanceOf(OCRmyPDF::class, $instance->setExecutable("ocrmypdf"));
