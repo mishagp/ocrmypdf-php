@@ -38,7 +38,7 @@ class Command
             return true;
         }
 
-        if (!strpos($stderr, 'error') === FALSE) {
+        if (!str_contains(strtoupper($stderr), 'ERROR')) {
             return true;
         }
 
