@@ -6,6 +6,7 @@ A simple PHP wrapper for OCRmyPDF
 [![Total Downloads](http://poser.pugx.org/mishagp/ocrmypdf/downloads)](https://packagist.org/packages/mishagp/ocrmypdf)
 [![License](http://poser.pugx.org/mishagp/ocrmypdf/license)](https://packagist.org/packages/mishagp/ocrmypdf)
 [![PHP Version Require](http://poser.pugx.org/mishagp/ocrmypdf/require/php)](https://packagist.org/packages/mishagp/ocrmypdf)
+[![codecov](https://codecov.io/gh/mishagp/ocrmypdf-php/graph/badge.svg?token=F3CU9T8LJU)](https://codecov.io/gh/mishagp/ocrmypdf-php)
 
 ## Installation
 
