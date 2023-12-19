@@ -2,6 +2,14 @@
 
 All notable changes to `ocrmypdf-php` will be documented in this file
 
+## v0.2.1 - 2023-12-19
+
+### What's Changed
+
+* Fix: Better error detection and handling by @mishagp in https://github.com/mishagp/ocrmypdf-php/pull/6
+
+**Full Changelog**: https://github.com/mishagp/ocrmypdf-php/compare/v0.2.0...v0.2.1
+
 ## v0.2.0 - 2023-12-19
 
 ### What's Changed
