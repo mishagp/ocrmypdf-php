@@ -10,11 +10,15 @@ class Command
     public int|null $inputDataSize;
     public string|null $inputData;
 
+    /**
+     * @param array<string, bool|string|string[]> $parameters
+     */
     public function __construct(
         public ?string $inputFilePath = null,
         public ?string $outputPDFPath = null,
         public ?string $tempDir = null,
-        public ?int    $threadLimit = null
+        public ?int    $threadLimit = null,
+        public array   $parameters = []
     )
     {
     }
@@ -65,7 +69,25 @@ class Command
         $cmd = [];
 
         $cmd[] = self::escape($this->executable);
+
         if ($this->threadLimit) $cmd[] = "--jobs=$this->threadLimit";
+
+        foreach ($this->parameters as $key => $value) {
+            if ($value !== true) {
+                $paramKeyValue = $key;
+                $paramKeyValue .= "='";
+                if (is_array($value)) {
+                    $paramKeyValue .= join(',', $value);
+                } else {
+                    $paramKeyValue .= $value;
+                }
+                $paramKeyValue .= "'";
+                $cmd[] = $paramKeyValue;
+            } else {
+                $cmd[] = $key;
+            }
+        }
+
         $cmd[] = $this->useFileAsInput ? self::escape((string)$this->inputFilePath) : "-";
         $cmd[] = $this->useFileAsOutput ? self::escape($this->getOutputPDFPath()) : "-";
 

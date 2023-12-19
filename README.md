@@ -24,15 +24,40 @@ on your platform.
 use mishagp\OCRmyPDF\OCRmyPDF;
 
 //Return file path of outputted, OCRed PDF
-echo (new OCRmyPDF('document.pdf'))->run();
+echo OCRmyPDF::make('document.pdf')->run();
 
 //Return file contents of outputted, OCRed PDF
-echo (new OCRmyPDF('scannedImage.png'))->setOutputPDFPath(null)->run();
+echo OCRmyPDF::make('scannedImage.png')->setOutputPDFPath(null)->run();
 ```
 
 ## API
 
-_This section is a work-in-progress._
+### setParam
+
+Define invocation parameters for `ocrmypdf`. See `ocrmypdf --help` for a list of available parameters.
+
+> [!IMPORTANT]
+> Parameters configured via `setParam` will override any other parameters or configurations set otherwise.
+
+```php
+use mishagp\OCRmyPDF\OCRmyPDF;
+
+//Passing a single parameter with a value
+OCRmyPDF::make('document_zh-CN.pdf')
+    ->setParam('-l', 'chi_sim')
+    ->run();
+
+//Passing a single parameter without a value
+OCRmyPDF::make('document_withBackground.pdf')
+    ->setParam('--remove-background')
+    ->run();
+
+//Passing multiple parameters
+OCRmyPDF::make('document_withoutAttribution.pdf')
+    ->setParam('--title', 'Lorem Ipsum')
+    ->setParam('--keywords', 'Lorem,Ipsum,dolor,sit,amet')
+    ->run();
+```
 
 ### setInputData
 
@@ -51,7 +76,7 @@ imagepng($img, null, 0);
 $size = ob_get_length();
 $data = ob_get_clean();
 
-echo (new OCRmyPDF())
+OCRmyPDF::make()
     ->setInputData($data, $size)
     ->run();
 ```
@@ -62,7 +87,7 @@ Specify a writable path where `ocrmypdf` should generate output PDF.
 
 ```php
 use mishagp\OCRmyPDF\OCRmyPDF;
-echo (new OCRmyPDF('document.pdf'))
+OCRmyPDF::make('document.pdf')
     ->setOutputPDFPath('/outputDir/ocr_document.pdf')
     ->run();
 ```
@@ -73,7 +98,7 @@ Define a custom location of the `ocrmypdf` executable, if by any reason it is no
 
 ```php
 use mishagp\OCRmyPDF\OCRmyPDF;
-echo (new OCRmyPDF('document.pdf'))
+OCRmyPDF::make('document.pdf')
     ->setExecutable('/path/to/ocrmypdf')
     ->run();
 ```

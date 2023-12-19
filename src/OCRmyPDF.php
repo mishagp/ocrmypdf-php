@@ -19,6 +19,11 @@ class OCRmyPDF
         $this->setInputFile("$inputFile");
     }
 
+    static function make(string $inputFile = null, Command $command = null): self
+    {
+        return new OCRmyPDF($inputFile, $command);
+    }
+
     /**
      * @param string $filePath
      * @return bool
@@ -105,7 +110,7 @@ class OCRmyPDF
                 );
             }
 
-            $process = new Process("$this->command");
+            $process = new Process((string)$this->command);
 
             if (!$this->command->useFileAsInput) {
                 $process->write(
@@ -156,6 +161,7 @@ class OCRmyPDF
 
     /**
      * @return void
+     * @throws NoWritePermissionsException
      */
     private function cleanTempFiles(): void
     {
@@ -192,6 +198,19 @@ class OCRmyPDF
                 $this->command->outputPDFPath = $outputPDFPath;
             }
         }
+        return $this;
+    }
+
+    /**
+     * @param string|string[]|null $value
+     */
+    public function setParam(string $param, null|string|array $value = null): self
+    {
+        if (!str_starts_with($param, '-') && !str_starts_with($param, '--')) {
+            throw new InvalidArgumentException("Parameter $param must start with a - or --");
+        }
+
+        $this->command->parameters[$param] = $value ?? true;
         return $this;
     }
 }
