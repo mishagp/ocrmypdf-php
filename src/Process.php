@@ -33,12 +33,12 @@ class Process
             ["pipe", "w"]
         ];
         $this->handle = proc_open(
-            $commandString,
-            $streamDescriptors,
-            $pipes,
-            NULL,
-            NULL,
-            ["bypass_shell" => true]
+            command: $commandString,
+            descriptor_spec: $streamDescriptors,
+            pipes: $pipes,
+            cwd: NULL,
+            env_vars: NULL,
+            options: ["bypass_shell" => true]
         );
 
         /** @var array<resource> $pipes */

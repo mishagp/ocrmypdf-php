@@ -15,7 +15,7 @@ class OCRmyPDF
      */
     public function __construct(?string $inputFile = null, ?Command $command = null)
     {
-        $this->command = $command !== null ? $command : new Command();
+        $this->command = $command ?? new Command();
         $this->setInputFile("$inputFile");
     }
 
