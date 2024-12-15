@@ -2,6 +2,17 @@
 
 All notable changes to `ocrmypdf-php` will be documented in this file
 
+## v0.4.0 - 2024-12-15
+
+### What's Changed
+
+* Bump codecov/codecov-action from 3 to 4 by @dependabot in https://github.com/mishagp/ocrmypdf-php/pull/8
+* Bump codecov/codecov-action from 4 to 5 by @dependabot in https://github.com/mishagp/ocrmypdf-php/pull/10
+* Update phpstan/phpstan requirement from ^1.10 to ^1.10 || ^2.0 by @dependabot in https://github.com/mishagp/ocrmypdf-php/pull/9
+* Update PHPUnit, increase PHPStan scrutiny, improve tests by @mishagp in https://github.com/mishagp/ocrmypdf-php/pull/11
+
+**Full Changelog**: https://github.com/mishagp/ocrmypdf-php/compare/v0.3.0...v0.4.0
+
 ## v0.3.0 - 2023-12-19
 
 ### What's Changed
