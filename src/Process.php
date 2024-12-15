@@ -6,8 +6,19 @@ use InvalidArgumentException;
 
 class Process
 {
+    /**
+     * @var ?resource $stdin
+     */
     private mixed $stdin;
+
+    /**
+     * @var ?resource $stdout
+     */
     private mixed $stdout;
+
+    /**
+     * @var ?resource $stderr
+     */
     private mixed $stderr;
     private mixed $handle;
 
@@ -125,13 +136,13 @@ class Process
     }
 
     /**
-     * @param resource $stream
+     * @param resource|null $stream
      */
     private function closeStream(&$stream): void
     {
-        if ($stream !== NULL) {
+        if (is_resource($stream) && get_resource_type($stream) === 'stream') {
             fclose($stream);
-            $stream = NULL;
+            $stream = null;
         }
     }
 }
