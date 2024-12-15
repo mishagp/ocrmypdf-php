@@ -38,7 +38,7 @@ class Command
             if (file_exists($file) && filesize($file) > 0) return true;
         }
 
-        if (!$command->useFileAsOutput && $stdout) {
+        if (!$command->useFileAsOutput && $stdout === '') {
             return true;
         }
 
@@ -70,7 +70,7 @@ class Command
 
         $cmd[] = self::escape($this->executable);
 
-        if ($this->threadLimit) $cmd[] = "--jobs=$this->threadLimit";
+        if ($this->threadLimit !== null) $cmd[] = "--jobs=$this->threadLimit";
 
         foreach ($this->parameters as $key => $value) {
             if ($value !== true) {
@@ -99,7 +99,7 @@ class Command
      */
     public function getOutputPDFPath(): string
     {
-        if (!$this->outputPDFPath) {
+        if ($this->outputPDFPath === null) {
             $tempPath = tempnam($this->getTempDir(), 'ocr_');
             if ($tempPath === false) {
                 throw new NoWritePermissionsException("Cannot create temporary file in {$this->getTempDir()}");
@@ -114,7 +114,7 @@ class Command
 
     public function getTempDir(): string
     {
-        return $this->tempDir ?: sys_get_temp_dir();
+        return $this->tempDir !== null ? $this->tempDir : sys_get_temp_dir();
     }
 
     public function getOCRmyPDFVersion(): string
@@ -125,7 +125,7 @@ class Command
 
     public static function escape(string $str): string
     {
-        $charlist = strtoupper(substr(PHP_OS, 0, 3)) == 'WIN' ? '$"`' : '$"\\`';
+        $charlist = strtoupper(substr(PHP_OS, 0, 3)) === 'WIN' ? '$"`' : '$"\\`';
         return '"' . addcslashes($str, $charlist) . '"';
     }
 }

@@ -4,12 +4,22 @@
 namespace mishagp\OCRmyPDF\Tests\E2E;
 
 
+use mishagp\OCRmyPDF\Command;
 use mishagp\OCRmyPDF\NoWritePermissionsException;
 use mishagp\OCRmyPDF\OCRmyPDF;
 use mishagp\OCRmyPDF\OCRmyPDFException;
+use mishagp\OCRmyPDF\Process;
+use mishagp\OCRmyPDF\Tests\Helpers;
 use mishagp\OCRmyPDF\UnsuccessfulCommandException;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use function PHPUnit\Framework\assertFileExists;
+use function PHPUnit\Framework\assertFileIsReadable;
+use function PHPUnit\Framework\assertFileIsWritable;
 
+#[CoversClass(OCRmyPDF::class)]
+#[CoversClass(Command::class)]
+#[CoversClass(Process::class)]
 class OCRmyPDFAcceptsStdinInputTest extends TestCase
 {
     /**
@@ -23,9 +33,9 @@ class OCRmyPDFAcceptsStdinInputTest extends TestCase
         $instance = new OCRmyPDF();
         $instance->setInputData((string)file_get_contents($inputFile), (int)filesize($inputFile));
         $outputPath = $instance->run();
-        $this->assertFileExists($outputPath);
-        $this->assertFileIsReadable($outputPath);
-        $this->assertFileIsWritable($outputPath);
-        echo "Output: $outputPath";
+        assertFileExists($outputPath);
+        assertFileIsReadable($outputPath);
+        assertFileIsWritable($outputPath);
+        Helpers::echoOutputPathWithTestContext($outputPath);
     }
 }

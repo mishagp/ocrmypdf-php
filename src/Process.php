@@ -9,17 +9,17 @@ class Process
     /**
      * @var ?resource $stdin
      */
-    private mixed $stdin;
+    private $stdin;
 
     /**
      * @var ?resource $stdout
      */
-    private mixed $stdout;
+    private $stdout;
 
     /**
      * @var ?resource $stderr
      */
-    private mixed $stderr;
+    private $stderr;
     private mixed $handle;
 
     /**
@@ -32,14 +32,35 @@ class Process
             ["pipe", "w"],
             ["pipe", "w"]
         ];
-        $this->handle = proc_open($commandString, $streamDescriptors, $pipes, NULL, NULL, ["bypass_shell" => true]);
-        list($this->stdin, $this->stdout, $this->stderr) = $pipes;
+        $this->handle = proc_open(
+            command: $commandString,
+            descriptor_spec: $streamDescriptors,
+            pipes: $pipes,
+            cwd: NULL,
+            env_vars: NULL,
+            options: ["bypass_shell" => true]
+        );
+
+        /** @var array<resource> $pipes */
+        if (isset($pipes[0])) {
+            $this->stdin = $pipes[0];
+        }
+        if (isset($pipes[1])) {
+            $this->stdout = $pipes[1];
+        }
+        if (isset($pipes[2])) {
+            $this->stderr = $pipes[2];
+        }
 
         self::checkProcessCreation($this->handle, $commandString);
 
-        //This can avoid deadlock on some cases (when stderr buffer is filled up before writing to stdout and vice-versa)
-        stream_set_blocking($this->stdout, false);
-        stream_set_blocking($this->stderr, false);
+        //This can avoid deadlock on some cases (when stderr buffer is filled up before writing to stdout and vice versa)
+        if (is_resource($this->stdout)) {
+            stream_set_blocking($this->stdout, false);
+        }
+        if (is_resource($this->stderr)) {
+            stream_set_blocking($this->stderr, false);
+        }
     }
 
     /**
@@ -50,7 +71,7 @@ class Process
         if (is_resource($processHandle) === true) {
             return;
         }
-
+        $msg = [];
         $msg[] = 'Error: The command could not be launched.';
         $msg[] = '';
         $msg[] = 'Generated command:';
@@ -69,7 +90,12 @@ class Process
         $total = 0;
         do {
             $res = fwrite($this->stdin, substr($data, $total));
-        } while ($res && $total += $res < $dataLength);
+            if ($res === false) {
+                break;
+            }
+
+            $total += $res;
+        } while ($total < $dataLength);
         return $total === $dataLength;
     }
 
