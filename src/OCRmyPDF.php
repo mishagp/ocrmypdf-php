@@ -13,13 +13,13 @@ class OCRmyPDF
      * @param string|null $inputFile
      * @param Command|null $command
      */
-    public function __construct(string $inputFile = null, Command $command = null)
+    public function __construct(?string $inputFile = null, ?Command $command = null)
     {
         $this->command = $command ?: new Command();
         $this->setInputFile("$inputFile");
     }
 
-    static function make(string $inputFile = null, Command $command = null): self
+    static function make(?string $inputFile = null, ?Command $command = null): self
     {
         return new OCRmyPDF($inputFile, $command);
     }
