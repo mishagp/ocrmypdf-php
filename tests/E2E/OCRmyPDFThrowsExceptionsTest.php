@@ -4,14 +4,20 @@
 namespace mishagp\OCRmyPDF\Tests\E2E;
 
 
+use mishagp\OCRmyPDF\Command;
 use mishagp\OCRmyPDF\FileNotFoundException;
 use mishagp\OCRmyPDF\NoWritePermissionsException;
 use mishagp\OCRmyPDF\OCRmyPDF;
 use mishagp\OCRmyPDF\OCRmyPDFException;
 use mishagp\OCRmyPDF\OCRmyPDFNotFoundException;
+use mishagp\OCRmyPDF\Process;
 use mishagp\OCRmyPDF\UnsuccessfulCommandException;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+#[CoversClass(OCRmyPDF::class)]
+#[CoversClass(Command::class)]
+#[CoversClass(Process::class)]
 class OCRmyPDFThrowsExceptionsTest extends TestCase
 {
     /**

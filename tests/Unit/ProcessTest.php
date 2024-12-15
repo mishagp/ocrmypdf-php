@@ -5,9 +5,13 @@ namespace mishagp\OCRmyPDF\Tests\Unit;
 use InvalidArgumentException;
 use mishagp\OCRmyPDF\Process;
 use mishagp\OCRmyPDF\UnsuccessfulCommandException;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
+use function PHPUnit\Framework\assertEquals;
+use function PHPUnit\Framework\assertFalse;
 
+#[CoversClass(Process::class)]
 class ProcessTest extends TestCase
 {
     public function testCheckProcessCreationFailed(): void
@@ -26,7 +30,7 @@ class ProcessTest extends TestCase
         $reflectedProcessStdin->setAccessible(true);
         $reflectedProcessStdin->setValue($process, null);
 
-        $this->assertFalse($process->write("test", 0));
+        assertFalse($process->write("test", 0));
     }
 
     public function testWaitWithNullStdin(): void
@@ -39,7 +43,7 @@ class ProcessTest extends TestCase
         $reflectedProcessStdin->setAccessible(true);
         $reflectedProcessStdin->setValue($process, null);
 
-        $this->assertEquals([
+        assertEquals([
             "out" => "",
             "err" => ""
         ], $process->wait());

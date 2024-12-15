@@ -3,11 +3,21 @@
 namespace mishagp\OCRmyPDF\Tests\E2E;
 
 use InvalidArgumentException;
+use mishagp\OCRmyPDF\Command;
 use mishagp\OCRmyPDF\OCRmyPDF;
 use mishagp\OCRmyPDF\OCRmyPDFException;
+use mishagp\OCRmyPDF\Process;
+use mishagp\OCRmyPDF\Tests\Helpers;
 use mishagp\OCRmyPDF\UnsuccessfulCommandException;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use function PHPUnit\Framework\assertFileExists;
+use function PHPUnit\Framework\assertFileIsReadable;
+use function PHPUnit\Framework\assertFileIsWritable;
 
+#[CoversClass(OCRmyPDF::class)]
+#[CoversClass(Command::class)]
+#[CoversClass(Process::class)]
 class OCRmyPDFParsesParametersTest extends TestCase
 {
     /**
@@ -27,10 +37,10 @@ class OCRmyPDFParsesParametersTest extends TestCase
             ->setParam('--title', "Lorem Ipsum");
 
         $outputPath = $instance->run();
-        $this->assertFileExists($outputPath);
-        $this->assertFileIsReadable($outputPath);
-        $this->assertFileIsWritable($outputPath);
-        echo "Output: $outputPath";
+        assertFileExists($outputPath);
+        assertFileIsReadable($outputPath);
+        assertFileIsWritable($outputPath);
+        Helpers::echoOutputPathWithTestContext($outputPath);
     }
 
     /**
@@ -50,10 +60,10 @@ class OCRmyPDFParsesParametersTest extends TestCase
             ->setParam('--pages', ['1-2', '4']);
 
         $outputPath = $instance->run();
-        $this->assertFileExists($outputPath);
-        $this->assertFileIsReadable($outputPath);
-        $this->assertFileIsWritable($outputPath);
-        echo "Output: $outputPath";
+        assertFileExists($outputPath);
+        assertFileIsReadable($outputPath);
+        assertFileIsWritable($outputPath);
+        Helpers::echoOutputPathWithTestContext($outputPath);
     }
 
     /**

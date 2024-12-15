@@ -15,7 +15,7 @@ class OCRmyPDF
      */
     public function __construct(?string $inputFile = null, ?Command $command = null)
     {
-        $this->command = $command ?: new Command();
+        $this->command = $command !== null ? $command : new Command();
         $this->setInputFile("$inputFile");
     }
 
@@ -60,7 +60,7 @@ class OCRmyPDF
             : 'type ' . Command::escape($executablePath) . ' > /dev/null 2>&1';
         system($cmd, $exitCode);
 
-        if ($exitCode == 0) return;
+        if ($exitCode === 0) return;
 
         $currentPath = getenv('PATH');
         $msg = [];
@@ -142,6 +142,7 @@ class OCRmyPDF
      */
     public function setInputFile(string $inputFile): OCRmyPDF
     {
+        $this->command->useFileAsInput = true;
         $this->command->inputFilePath = $inputFile;
         return $this;
     }
@@ -190,7 +191,7 @@ class OCRmyPDF
      */
     public function setOutputPDFPath(string|null $outputPDFPath): self
     {
-        if ($outputPDFPath == null) {
+        if ($outputPDFPath === null) {
             $this->command->useFileAsOutput = false;
         } else {
             $this->command->useFileAsOutput = true;

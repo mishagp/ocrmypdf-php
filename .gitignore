@@ -3,3 +3,5 @@ coverage-report
 coverage.xml
 vendor
 .phpunit.result.cache
+.phpunit.cache
+.idea
